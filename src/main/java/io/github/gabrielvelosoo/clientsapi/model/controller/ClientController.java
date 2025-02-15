@@ -1,0 +1,52 @@
+package io.github.gabrielvelosoo.clientsapi.model.controller;
+
+import io.github.gabrielvelosoo.clientsapi.model.dto.client.RegisterClientDTO;
+import io.github.gabrielvelosoo.clientsapi.model.entity.Client;
+import io.github.gabrielvelosoo.clientsapi.model.mapper.ClientMapper;
+import io.github.gabrielvelosoo.clientsapi.model.service.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+
+@RestController
+@RequestMapping(value = "/api/clients")
+@RequiredArgsConstructor
+public class ClientController implements GenericController {
+
+    private final ClientService clientService;
+    private final ClientMapper clientMapper;
+
+    @PostMapping
+    @Operation(summary = "Save", description = "Register new client")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Registered with success", content = @Content)
+    })
+    public ResponseEntity<Void> save(@RequestBody RegisterClientDTO clientDTO) {
+        Client client = clientMapper.toEntity(clientDTO);
+        clientService.save(client);
+        URI url = generateHeaderLocation(client.getId());
+        return ResponseEntity.created(url).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    @Operation(summary = "Update", description = "Update a client")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Updated with success", content = @Content)
+    })
+    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody RegisterClientDTO clientDTO) {
+        return clientService.findById(fromString(id))
+                .map(client -> {
+                    Client clientEntity = clientMapper.toEntity(clientDTO);
+                    client.setName(clientEntity.getName());
+                    client.setCpf(clientEntity.getCpf());
+                    clientService.update(client);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+}
