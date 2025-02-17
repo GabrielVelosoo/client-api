@@ -22,6 +22,10 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    public void delete(Client client) {
+        clientRepository.delete(client);
+    }
+
     public Optional<Client> findById(UUID id) {
         return clientRepository.findById(id);
     }

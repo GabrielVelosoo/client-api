@@ -22,6 +22,10 @@ public class ProvidedServiceService {
         providedServiceRepository.save(service);
     }
 
+    public void delete(ProvidedService service) {
+        providedServiceRepository.delete(service);
+    }
+
     public Optional<ProvidedService> findById(UUID id) {
         return providedServiceRepository.findById(id);
     }

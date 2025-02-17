@@ -1,6 +1,7 @@
 package io.github.gabrielvelosoo.clientsapi.model.controller;
 
 import io.github.gabrielvelosoo.clientsapi.model.dto.client.RegisterClientDTO;
+import io.github.gabrielvelosoo.clientsapi.model.dto.client.ResultSearchClientDTO;
 import io.github.gabrielvelosoo.clientsapi.model.entity.Client;
 import io.github.gabrielvelosoo.clientsapi.model.mapper.ClientMapper;
 import io.github.gabrielvelosoo.clientsapi.model.service.ClientService;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class ClientController implements GenericController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Registered with success", content = @Content)
     })
-    public ResponseEntity<Void> save(@RequestBody RegisterClientDTO clientDTO) {
+    public ResponseEntity<Void> save(@RequestBody @Valid RegisterClientDTO clientDTO) {
         Client client = clientMapper.toEntity(clientDTO);
         clientService.save(client);
         URI url = generateHeaderLocation(client.getId());
@@ -39,7 +41,7 @@ public class ClientController implements GenericController {
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Updated with success", content = @Content)
     })
-    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody RegisterClientDTO clientDTO) {
+    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody @Valid RegisterClientDTO clientDTO) {
         return clientService.findById(fromString(id))
                 .map(client -> {
                     Client clientEntity = clientMapper.toEntity(clientDTO);
@@ -47,6 +49,32 @@ public class ClientController implements GenericController {
                     client.setCpf(clientEntity.getCpf());
                     clientService.update(client);
                     return ResponseEntity.noContent().build();
+                }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Delete", description = "Delete a client")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Deleted with success", content = @Content)
+    })
+    public ResponseEntity<Object> delete(@PathVariable String id) {
+        return clientService.findById(fromString(id))
+                .map(client -> {
+                    clientService.delete(client);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @GetMapping(value = "/{id}")
+    @Operation(summary = "Find by ID", description = "Find a client by ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Client found", content = @Content)
+    })
+    public ResponseEntity<ResultSearchClientDTO> findById(@PathVariable String id) {
+        return clientService.findById(fromString(id))
+                .map(client -> {
+                    ResultSearchClientDTO clientDTO = clientMapper.toDTO(client);
+                    return ResponseEntity.ok(clientDTO);
                 }).orElseGet( () -> ResponseEntity.notFound().build() );
     }
 }

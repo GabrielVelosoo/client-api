@@ -1,6 +1,7 @@
 package io.github.gabrielvelosoo.clientsapi.model.mapper;
 
 import io.github.gabrielvelosoo.clientsapi.model.dto.service.RegisterServiceDTO;
+import io.github.gabrielvelosoo.clientsapi.model.dto.service.ResultSearchServiceDTO;
 import io.github.gabrielvelosoo.clientsapi.model.entity.ProvidedService;
 import io.github.gabrielvelosoo.clientsapi.model.repository.ClientRepository;
 import org.mapstruct.Mapper;
@@ -15,4 +16,5 @@ public abstract class ServiceMapper {
 
     @Mapping(target = "client", expression = "java( clientRepository.findById(serviceDTO.clientId()).orElse(null) )")
     public abstract ProvidedService toEntity(RegisterServiceDTO serviceDTO);
+    public abstract ResultSearchServiceDTO toDTO(ProvidedService service);
 }
