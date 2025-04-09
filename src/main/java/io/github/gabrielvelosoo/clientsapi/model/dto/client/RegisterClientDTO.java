@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.br.CPF;
 public record RegisterClientDTO(
         @NotBlank(message = "Required field")
         @Size(min = 2, max = 100, message = "Field outside standard size")
-        String name,
+        String nome,
         @NotBlank(message = "Required field")
         @CPF(message = "Invalid field")
         String cpf

@@ -17,6 +17,13 @@
     <description>clients-api</description>
     <url/>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <java.version>21</java.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>

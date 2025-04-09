@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record ResultSearchClientDTO(
         UUID id,
-        String name,
+        String nome,
         String cpf,
         LocalDateTime registrationDate,
         LocalDateTime updatedDate

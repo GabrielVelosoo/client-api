@@ -15,10 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/clients")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class ClientController implements GenericController {
 
     private final ClientService clientService;
@@ -45,7 +47,7 @@ public class ClientController implements GenericController {
         return clientService.findById(fromString(id))
                 .map(client -> {
                     Client clientEntity = clientMapper.toEntity(clientDTO);
-                    client.setName(clientEntity.getName());
+                    client.setNome(clientEntity.getNome());
                     client.setCpf(clientEntity.getCpf());
                     clientService.update(client);
                     return ResponseEntity.noContent().build();
@@ -63,6 +65,13 @@ public class ClientController implements GenericController {
                     clientService.delete(client);
                     return ResponseEntity.noContent().build();
                 }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResultSearchClientDTO>> findAll() {
+        List<Client> clients = clientService.findAll();
+        List<ResultSearchClientDTO> clientsDTO = clientMapper.toDTOs(clients);
+        return ResponseEntity.ok(clientsDTO);
     }
 
     @GetMapping(value = "/{id}")

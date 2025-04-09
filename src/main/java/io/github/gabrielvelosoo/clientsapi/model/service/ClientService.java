@@ -5,6 +5,7 @@ import io.github.gabrielvelosoo.clientsapi.model.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,10 @@ public class ClientService {
 
     public void delete(Client client) {
         clientRepository.delete(client);
+    }
+
+    public List<Client> findAll() {
+        return clientRepository.findAll();
     }
 
     public Optional<Client> findById(UUID id) {

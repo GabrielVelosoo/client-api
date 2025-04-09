@@ -5,9 +5,12 @@ import io.github.gabrielvelosoo.clientsapi.model.dto.client.ResultSearchClientDT
 import io.github.gabrielvelosoo.clientsapi.model.entity.Client;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
 
     Client toEntity(RegisterClientDTO clientDTO);
     ResultSearchClientDTO toDTO(Client client);
+    List<ResultSearchClientDTO> toDTOs(List<Client> clients);
 }

@@ -21,17 +21,17 @@ public class Client implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+    @Column(name = "nome", length = 100, nullable = false)
+    private String nome;
 
     @Column(name = "cpf", length = 11, nullable = false, unique = true)
     private String cpf;
 
     @CreatedDate
-    @Column(name = "registration_date")
-    private LocalDateTime registrationDate;
+    @Column(name = "data_cadastro")
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    @Column(name = "data_atualizacao")
+    private LocalDateTime updatedAt;
 }
