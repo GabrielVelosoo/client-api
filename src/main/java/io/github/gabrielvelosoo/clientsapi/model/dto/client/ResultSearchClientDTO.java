@@ -7,7 +7,7 @@ public record ResultSearchClientDTO(
         UUID id,
         String nome,
         String cpf,
-        LocalDateTime registrationDate,
-        LocalDateTime updatedDate
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
 }
