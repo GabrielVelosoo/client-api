@@ -11,7 +11,7 @@ public record ResultSearchServiceDTO(
         String description,
         BigDecimal price,
         Client client,
-        LocalDateTime registrationDate,
-        LocalDateTime updatedDate
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
 }

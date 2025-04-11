@@ -34,9 +34,9 @@ public class ProvidedService implements Serializable {
 
     @CreatedDate
     @Column(name = "registration_date")
-    private LocalDateTime registrationDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 }

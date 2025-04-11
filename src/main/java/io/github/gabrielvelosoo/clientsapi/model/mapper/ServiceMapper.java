@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = ClientMapper.class)
 public abstract class ServiceMapper {
 
@@ -17,4 +19,5 @@ public abstract class ServiceMapper {
     @Mapping(target = "client", expression = "java( clientRepository.findById(serviceDTO.clientId()).orElse(null) )")
     public abstract ProvidedService toEntity(RegisterServiceDTO serviceDTO);
     public abstract ResultSearchServiceDTO toDTO(ProvidedService service);
+    public abstract List<ResultSearchServiceDTO> toDTOs(List<ProvidedService> services);
 }

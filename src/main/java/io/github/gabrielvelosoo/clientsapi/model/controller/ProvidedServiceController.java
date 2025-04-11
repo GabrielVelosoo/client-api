@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/services")
@@ -65,6 +66,16 @@ public class ProvidedServiceController implements GenericController {
                     providedServiceService.delete(service);
                     return ResponseEntity.noContent().build();
                 }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResultSearchServiceDTO>> searchServices(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "mes", required = false) Integer mes
+    ) {
+        List<ProvidedService> services = providedService.searchServices(nome, mes);
+        List<ResultSearchServiceDTO> serviceDTOs = serviceMapper.toDTOs(services);
+        return ResponseEntity.ok(serviceDTOs);
     }
 
     @GetMapping(value = "/{id}")
