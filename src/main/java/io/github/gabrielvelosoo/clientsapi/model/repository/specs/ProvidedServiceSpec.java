@@ -15,7 +15,7 @@ public class ProvidedServiceSpec {
     }
 
     public static Specification<ProvidedService> mesEqual(Integer mes) {
-        return (root, query, cb) -> cb.equal( cb.function("to_char", String.class, root.get("createdAt"), cb.literal("MM") ),
-                String.format("%02d", mes) );
+        return (root, query, cb) -> cb.equal( cb.function("to_char", String.class, root.get("createdAt"), cb.literal("FMMM") ),
+                String.valueOf(mes) );
     }
 }
